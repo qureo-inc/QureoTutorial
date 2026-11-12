@@ -3,6 +3,68 @@
  */
 //% color=#D83B01 weight=400 icon="\uf1e6" block="エージェント"
 namespace hiragana_agent {
+    export enum HiraganaTurnDirection {
+        //% block="ひだり"
+        Left = 2,
+        //% block="みぎ"
+        Right = 3
+    }
+
+    
+    //% blockId=hiragana_agent_15
+    //% block="$direction"
+    //% direction.defl=2
+    export function turnDirection(direction: HiraganaTurnDirection): number {
+        return direction;
+    }
+
+    export enum Bool {
+        //% block="しん"
+        Shin = 1,
+        //% block="ぎ"
+        Gi = 0
+    }
+
+
+    //% blockId=hiragana_shingi
+    //% block="$bool"
+    //% bool.defl=true
+    //% shim=TD_ID
+    export function shingi(bool: Bool): boolean {
+        return bool === Bool.Shin;
+    }
+
+    //% blockId=hiragana_agent_13
+    //% block="もし $hoge なら"
+    //% handlerStatement=true
+    //% hoge.shadow=hiragana_shingi
+    //% topblock=false
+    export function moshi(hoge: boolean, handler: () => void): void {
+        if (hoge) handler();
+    }    
+
+    //% blockId=hiragana_agent_11
+    //% block="はじめに"
+    export function initial(handler: () => void): void {
+        handler();
+    }
+
+    //% blockId=hiragana_agent_10
+    //% block="くりかえし $times 回"
+    //% times.defl=4
+    //% handlerStatement=true
+    //% topblock=false
+    export function repeat(times: number, body: () => void): void {
+        for (let i = 0; i < times; i++) {
+            body();
+        }
+    }
+
+    //% blockId=hiragana_agent_9
+    //% block="チャットコマンド $aaa をにゅうりょくしたとき"
+    export function chatCommand(aaa: string, handler: () => void): void {
+        player.onChat(aaa, handler);
+    }
 
     //% blockId=hiragana_agent_8
     //% block="エージェントをじぶんのいちにもどす"
@@ -73,7 +135,7 @@ namespace hiragana_agent {
         agent.move(direction, blocks);
     }
 
-    //% blockID=hiragana_agent_9
+    //% blockID=hiragana_agent_999
     //% block="エージェントにトロッコをおかせる"
     export function placeMineCart(): void {
         player.execute("execute @c ~~~ summon minecart");
